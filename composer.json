@@ -1,0 +1,26 @@
+{
+	"name": "fuzz/rest-tester",
+	"description": "A base test suite for RESTful APIs written with Laravel.",
+	"require-dev": {
+		"laravel/framework": "5.1.*",
+		"orchestra/testbench": "3.1.*",
+		"mockery/mockery": "0.9.*",
+		"phpunit/phpunit": "~4.0",
+		"phpspec/phpspec": "~2.1",
+		"fzaninotto/faker": "^1.6@dev"
+	},
+	"authors": [
+		{
+			"name": "Fuzz Productions",
+			"email": "fuzzweb@fuzzproductions.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Fuzz\\RestTests\\": "src/",
+			"Fuzz\\RestTests\\Resources\\": "src/Traits",
+			"Fuzz\\RestTests\\Tests\\": "tests/"
+		}
+	},
+	"minimum-stability": "dev"
+}
