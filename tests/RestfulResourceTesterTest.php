@@ -45,8 +45,8 @@ class RestfulResourceTesterTest extends BaseTestCase
 
 	public function testItReturnsPath()
 	{
-		$this->baseUrl = 'http://base.url.com';
-		$this->api_version = '1.2';
+		$this->baseUrl       = 'http://base.url.com';
+		$this->api_version   = '1.2';
 		$this->resource_path = 'users';
 
 		$this->assertEquals('1.2/users', $this->path());
@@ -54,8 +54,8 @@ class RestfulResourceTesterTest extends BaseTestCase
 
 	public function testItReturnsPathWithId()
 	{
-		$this->baseUrl = 'http://base.url.com';
-		$this->api_version = '1.2';
+		$this->baseUrl       = 'http://base.url.com';
+		$this->api_version   = '1.2';
 		$this->resource_path = 'users';
 
 		$this->assertEquals('1.2/users/1', $this->path(1));
@@ -70,7 +70,7 @@ class RestfulResourceTesterTest extends BaseTestCase
 	public function testItCanMakeGenericUpdateForAllTypes()
 	{
 		$this->model = UserTestClass::class;
-		$user = $this->model(true);
+		$user        = $this->model(true);
 
 		// String
 		$user->sample_field = 'Username';
