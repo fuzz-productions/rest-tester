@@ -3,11 +3,11 @@
 namespace Fuzz\RestTests\Tests\Providers;
 
 use Fuzz\RestTests\Tests\Controllers\Controller;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
+//use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as BaseRouteServiceProvider;
 
-class RouteServiceProvider extends ServiceProvider
+class RouteServiceProvider extends BaseRouteServiceProvider
 {
 	/**
 	 * Register the service provider.

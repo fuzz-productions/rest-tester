@@ -2,16 +2,15 @@
 
 namespace Fuzz\RestTests\Tests;
 
+use Fuzz\RestTests\Resources\RestfulResource;
+use Fuzz\RestTests\Resources\TestsResourceIndex;
 use Fuzz\RestTests\Tests\Models\User;
 
 class RestfulUsersResourceTest extends ApiResourceTestCase
 {
-	public function testItCanCreateUser()
-	{
-		$user = new User;
-		$user->username = 'Username';
-		$this->assertTrue($user->save());
+	use RestfulResource, TestsResourceIndex;
 
-		$this->assertNotNull(User::find(1));
-	}
+	public $model = User::class;
+
+	public $resource_path = 'users';
 }

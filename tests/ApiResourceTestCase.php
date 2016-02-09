@@ -9,10 +9,11 @@ use LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider;
 use LucaDegasperi\OAuth2Server\Storage\FluentStorageServiceProvider;
 use Mockery;
 use Orchestra\Testbench\Traits\ApplicationTrait;
+use Orchestra\Testbench\Traits\WithFactories;
 
 abstract class ApiResourceTestCase extends BaseRestTestCase
 {
-	use ApplicationTrait;
+	use ApplicationTrait, WithFactories;
 
 	/**
 	 * The base URL to use while testing the application.
@@ -20,6 +21,13 @@ abstract class ApiResourceTestCase extends BaseRestTestCase
 	 * @var string
 	 */
 	protected $baseUrl = 'http://localhost';
+
+	/**
+	 * API Version
+	 *
+	 * @var string
+	 */
+	public $api_version = '1.0';
 
 	/**
 	 * The Eloquent factory instance.
@@ -68,13 +76,9 @@ abstract class ApiResourceTestCase extends BaseRestTestCase
 			$this->factory = $this->app->make(Factory::class);
 		}
 
-		// Own
-		$this->artisan = $this->app->make('Illuminate\Contracts\Console\Kernel');
+		$this->withFactories(__DIR__ . '/Factories');
 
-		$this->artisan->call('migrate', [
-			'--database' => 'testbench',
-			'--realpath'     => realpath(__DIR__ . '/migrations'),
-		]);
+		$this->performMigrate();
 	}
 
 	/**
@@ -157,6 +161,17 @@ abstract class ApiResourceTestCase extends BaseRestTestCase
 		$this->artisan->call('db:seed', [
 			'--database' => 'testbench',
 			'--class'    => 'TestDatabaseSeeder'
+		]);
+	}
+
+	protected function performMigrate()
+	{
+		// Own
+		$this->artisan = $this->app->make('Illuminate\Contracts\Console\Kernel');
+
+		$this->artisan->call('migrate', [
+			'--database' => 'testbench',
+			'--realpath'     => realpath(__DIR__ . '/migrations'),
 		]);
 	}
 }

@@ -16,7 +16,6 @@ class PasswordUserTables extends Migration
 			'users', function ($table) {
 			$table->string('username', 132)->nullable();
 			$table->string('password', 60)->nullable();
-			$table->string('password_token', 60)->nullable();
 		}
 		);
 	}
@@ -32,7 +31,6 @@ class PasswordUserTables extends Migration
 			'users', function ($table) {
 			//$table->dropColumn('username');
 			//$table->dropColumn('password');
-			//$table->dropColumn('password_token');
 		}
 		);
 	}

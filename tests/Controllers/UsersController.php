@@ -2,6 +2,7 @@
 
 namespace Fuzz\RestTests\Tests\Controllers;
 
+use Fuzz\RestTests\Tests\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -21,7 +22,7 @@ class UsersController extends BaseController
 	 */
 	public function index()
 	{
-		//
+		return User::all();
 	}
 
 	/**
