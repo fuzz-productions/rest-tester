@@ -29,7 +29,7 @@ class RouteServiceProvider extends BaseRouteServiceProvider
 	{
 		$router->group(['namespace' => 'Fuzz\\RestTests\\Tests\\Controllers', 'prefix' => Controller::API_VERSION], function (Router $router) {
 			$router->post(
-				'oauth/access_token', 'Fuzz\ApiServer\Routing\OAuthController@issueAccessToken'
+				'oauth/access_token', 'OAuthController@issueAccessToken'
 			);
 
 			$router->resource('users', 'UsersController');

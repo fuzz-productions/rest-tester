@@ -36,13 +36,6 @@ class UsersController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		// Set headers, if present in the request, so we can test some test utility methods
-		//foreach ($request->get('headers', []) as $key => $value) {
-		//	header("$key: $value");
-		//}
-
-		$headers = $request->header();
-
 		$user = new User($request->all());
 		$user->save();
 		return response()->json($user->toArray(), 201);
