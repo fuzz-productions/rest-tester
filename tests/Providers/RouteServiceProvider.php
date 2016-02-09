@@ -28,7 +28,15 @@ class RouteServiceProvider extends BaseRouteServiceProvider
 	public function map(Router $router)
 	{
 		$router->group(['namespace' => 'Fuzz\\RestTests\\Tests\\Controllers', 'prefix' => Controller::API_VERSION], function (Router $router) {
+			$router->post(
+				'oauth/access_token', 'Fuzz\ApiServer\Routing\OAuthController@issueAccessToken'
+			);
+
 			$router->resource('users', 'UsersController');
+			$router->resource('arbitrary', 'ArbitraryController');
+			$router->post('arbitrary/headers', 'ArbitraryController@headers');
+			$router->post('arbitrary/test-user-headers', 'ArbitraryController@testUserHeaders');
+			$router->post('arbitrary/response-with-wrapper', 'ArbitraryController@withWrapper');
 		});
 	}
 }

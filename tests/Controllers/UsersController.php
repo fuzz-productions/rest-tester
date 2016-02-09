@@ -4,17 +4,9 @@ namespace Fuzz\RestTests\Tests\Controllers;
 
 use Fuzz\RestTests\Tests\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as BaseController;
 
-class UsersController extends BaseController
+class UsersController extends Controller
 {
-	/**
-	 * The current version of the API.
-	 *
-	 * @var string
-	 */
-	const API_VERSION = '1.0';
-
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -22,15 +14,16 @@ class UsersController extends BaseController
 	 */
 	public function index()
 	{
-		return User::all();
+		return response()->json(User::all()->toArray());
 	}
 
 	/**
 	 * Show the form for creating a new resource.
 	 *
+	 * @param \Illuminate\Http\Request $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function create()
+	public function create(Request $request)
 	{
 		//
 	}
@@ -43,7 +36,16 @@ class UsersController extends BaseController
 	 */
 	public function store(Request $request)
 	{
-		//
+		// Set headers, if present in the request, so we can test some test utility methods
+		//foreach ($request->get('headers', []) as $key => $value) {
+		//	header("$key: $value");
+		//}
+
+		$headers = $request->header();
+
+		$user = new User($request->all());
+		$user->save();
+		return response()->json($user->toArray(), 201);
 	}
 
 	/**
@@ -54,16 +56,17 @@ class UsersController extends BaseController
 	 */
 	public function show($id)
 	{
-		//
+		return response()->json(User::find($id)->toArray());
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param \Illuminate\Http\Request $request
+	 * @param  int                     $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit($id)
+	public function edit(Request $request, $id)
 	{
 		//
 	}
@@ -77,7 +80,10 @@ class UsersController extends BaseController
 	 */
 	public function update(Request $request, $id)
 	{
-		//
+		$user = User::find($id);
+		$user->fill($request->all());
+		$user->save();
+		return response()->json($user->toArray());
 	}
 
 	/**
@@ -88,6 +94,8 @@ class UsersController extends BaseController
 	 */
 	public function destroy($id)
 	{
-		//
+		User::destroy($id);
+
+		return response()->json([], 200);
 	}
 }

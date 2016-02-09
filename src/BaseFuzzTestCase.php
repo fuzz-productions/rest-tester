@@ -39,7 +39,6 @@ class BaseFuzzTestCase extends TestCase
 		DB::connection()->disableQueryLog();
 
 		// ENV vars are set in phpunit.xml in the root project folder
-		Artisan::call('migrate:reset');
 		Artisan::call('migrate');
 		Artisan::call('db:seed');
 	}
@@ -51,6 +50,8 @@ class BaseFuzzTestCase extends TestCase
 	 */
 	public function tearDown()
 	{
+		Artisan::call('migrate:rollback');
+
 		$this->beforeApplicationDestroyed(function () {
 			DB::disconnect();
 		});

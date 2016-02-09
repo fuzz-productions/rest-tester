@@ -57,7 +57,7 @@ trait RestfulResource
 	/**
 	 * Find the resource path
 	 *
-	 * @param null|int $id
+	 * @param null|string|int $id
 	 * @return string
 	 */
 	public function path($id = null)

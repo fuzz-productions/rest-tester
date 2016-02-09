@@ -2,8 +2,6 @@
 
 namespace Fuzz\RestTests\Resources;
 
-use Illuminate\Support\Facades\Route;
-
 trait TestsResourceIndex
 {
 	/**

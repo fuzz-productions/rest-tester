@@ -33,7 +33,9 @@ trait TestsResourceCreate
 		$this->post($this->path(), $model->toArray())
 			// Then
 			->seeStatusCode(201)
-			->seeJsonEquals($model->toArray())
+			// We expect to see a response with all the model's attributes, plus an ID that we shouldn't try to
+			// guess
+			->seeJson($model->toArray())
 			->seeInDatabase($this->table(), $model->toArray());
 	}
 }

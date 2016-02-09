@@ -19,11 +19,24 @@ class BaseRestTestCase extends BaseFuzzTestCase
 	public $user_class = null;
 
 	/**
+	 * Stprage for user resource path
+	 *
+	 * @var string
+	 */
+	public $users_path = 'users';
+
+	/**
 	 * Storage for API version
 	 *
 	 * @var string
 	 */
 	public $api_version = null;
+
+	/**
+	 * Whether the response has a wrapper (ex: { "data": [ {"id": 1}, {"id": 2} ]
+	 * @var string
+	 */
+	public $response_wrapper = null;
 
 	/**
 	 * Get the API version
@@ -72,17 +85,32 @@ class BaseRestTestCase extends BaseFuzzTestCase
 	}
 
 	/**
-	 * Parse the last json response
+	 * Get the application's user resource path
 	 *
 	 * @return mixed
 	 */
-	protected function getJson()
+	public function usersPath()
 	{
-		return json_decode($this->response->getContent());
+		return $this->users_path;
 	}
 
 	/**
-	 * Send a create request as an admin
+	 * Parse the last json response
+	 *
+	 * @param bool $with_wrapper
+	 * @return \stdClass
+	 */
+	protected function getJson($with_wrapper = false)
+	{
+		if (is_null($this->response_wrapper) || $with_wrapper) {
+			return json_decode($this->response->getContent());
+		} else {
+			return json_decode($this->response->getContent())->{$this->response_wrapper};
+		}
+	}
+
+	/**
+	 * Send a create request to create a user
 	 *
 	 * $user_data can include 'scope' key to set scopes, assuming User model implements a way to set scopes
 	 * in such a way.
@@ -92,17 +120,59 @@ class BaseRestTestCase extends BaseFuzzTestCase
 	 * @param bool  $get_model
 	 * @return \stdClass
 	 */
-	public function createUser($user_data, $headers = [], $get_model = false)
+	public function createUser(array $user_data, $headers = [], $get_model = false)
 	{
 		// Create as an authenticated user
 		if (empty($headers)) {
-			$response = $this->post($this->url('users'), $user_data, $headers)->seeStatusCode(201)->getJson();
+			$response = $this->post($this->url($this->usersPath()), $user_data)->seeStatusCode(201)->getJson();
 		} else {
-			$response = $this->post($this->url('users'), $user_data)->seeStatusCode(201)->getJson();
+			$response = $this->post($this->url($this->usersPath()), $user_data, $headers)->seeStatusCode(201)->getJson();
 		}
 
 		$user = $this->userClass();
 
-		return $get_model ? $user::find($response->data->id) : $response;
+		return $get_model ? $user::find($response->id) : $response;
+	}
+
+	/**
+	 * Create a user in the database directly
+	 *
+	 * @param array $user_data
+	 * @param bool  $get_model
+	 * @return string
+	 */
+	public function createUserDirect(array $user_data, $get_model = false)
+	{
+		$user = $this->userClass(true);
+
+		// Set user data
+		foreach ($user_data as $attribute => $value) {
+			$user->{$attribute} = $value;
+		}
+
+		$status = $user->save();
+
+		return $get_model ? $user : $status;
+	}
+
+	/**
+	 * Read a value for a header that's ready to be sent
+	 *
+	 * @param string $key
+	 * @return null
+	 */
+	public function getHeaderValue($key)
+	{
+		if (! empty($this->headers_cache)) {
+			return isset($this->headers_cache[$key]) ? $this->headers_cache[$key] : null;
+		}
+
+		// Requires XDebug installed
+		foreach (xdebug_get_headers() as $header) {
+			$split                          = explode(': ', $header); // ['key', 'value']
+			$this->headers_cache[$split[0]] = $split[1];
+		}
+
+		return isset($this->headers_cache[$key]) ? $this->headers_cache[$key] : null;
 	}
 }
