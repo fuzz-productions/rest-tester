@@ -39,8 +39,41 @@ trait OAuthTrait
 		$response = $this->post($this->oauthUrl(), $request_data)->getJson();
 
 		// If this was a successful auth, set the access token
-		if (isset($response->access_tokens)) {
-			$this->access_tokens[$username] = $response->access_tokens;
+		if (isset($response->access_token)) {
+			$this->access_tokens[$username] = $response->access_token;
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Send an auth request and return the json data as a stdClass object
+	 *
+	 * @param        $refresh_token
+	 * @param array  $client
+	 * @param string $grant_type
+	 * @param string $username
+	 * @param array  $scopes
+	 * @return \stdClass
+	 */
+	public function refreshToken($refresh_token, array $client = [], $grant_type = 'refresh_token', $username = '', $scopes = [])
+	{
+		$request_data = [
+			'client_id'     => $client['client_id'],
+			'client_secret' => $client['client_secret'],
+			'grant_type'    => $grant_type,
+			'refresh_token' => $refresh_token,
+		];
+
+		if (! empty($scopes)) {
+			$request_data['scope'] = implode(',', $scopes);
+		}
+
+		$response = $this->post($this->oauthUrl(), $request_data)->getJson();
+
+		// If this was a successful auth, set the access token
+		if (isset($response->access_token)) {
+			$this->access_tokens[$username] = $response->access_token;
 		}
 
 		return $response;
