@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\DB;
 trait OAuthTrait
 {
 	/**
+	 * Access token storage
+	 *
+	 * @var array
+	 */
+	public $access_tokens = [];
+
+	/**
 	 * Send an auth request and return the json data as a stdClass object
 	 *
 	 * @param string $username
