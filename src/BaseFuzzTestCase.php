@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 class BaseFuzzTestCase extends TestCase
 {
+	public $seed_db_before_test = false;
+
 	/**
 	 * Creates the application.
 	 *
@@ -40,7 +42,10 @@ class BaseFuzzTestCase extends TestCase
 
 		// ENV vars are set in phpunit.xml in the root project folder
 		Artisan::call('migrate:refresh');
-		Artisan::call('db:seed');
+
+		if ($this->seed_db_before_test) {
+			Artisan::call('db:seed');
+		}
 	}
 
 	/**
