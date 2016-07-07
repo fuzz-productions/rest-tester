@@ -1,6 +1,7 @@
 {
 	"name": "fuzz/rest-tester",
 	"description": "A base test suite for RESTful APIs written with Laravel.",
+	"license": "MIT",
 	"require-dev": {
 		"laravel/framework": "5.1.*",
 		"orchestra/testbench": "3.1.*",
