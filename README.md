@@ -1,5 +1,5 @@
-Laravel REST-tester
-====================
+Laravel REST-tester [![Build Status](https://img.shields.io/travis/fuzz-productions/rest-tester/master.svg?style=flat)](https://travis-ci.org/fuzz-productions/rest-tester)
+===========================================================================================================================================================================
 A suite of helper methods to test REST APIs.
 
 ## Setup
