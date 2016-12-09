@@ -6,7 +6,7 @@
 		"laravel/framework": "5.1.*",
 		"orchestra/testbench": "3.1.*",
 		"mockery/mockery": "0.9.*",
-		"phpunit/phpunit": "~4.0",
+		"phpunit/phpunit": "~5.6",
 		"phpspec/phpspec": "~2.1",
 		"fzaninotto/faker": "^1.6@dev",
 		"lucadegasperi/oauth2-server-laravel": "5.0.x",
