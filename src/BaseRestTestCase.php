@@ -100,7 +100,7 @@ class BaseRestTestCase extends BaseFuzzTestCase
 	 * @param bool $with_wrapper
 	 * @return \stdClass
 	 */
-	protected function getJson($with_wrapper = false)
+	public function getJson($with_wrapper = false)
 	{
 		if (is_null($this->response_wrapper) || $with_wrapper) {
 			return json_decode($this->response->getContent());
